@@ -1,0 +1,52 @@
+{
+  "name": "thaker-app",
+  "version": "1.0.1",
+  "description": "تطبيق ذكر ",
+  "author": "fa6z",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fa6z/thaker-app.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --publish always"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "electron-updater": "^6.1.7"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.abdu015.thaker",
+    "productName": "Thaker App",
+    "directories": {
+      "output": "dist"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "fa6z",
+        "repo": "thaker-app",
+        "releaseType": "release"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icon.png",
+      "publish": [
+        "github"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "installerIcon": "icon.png",
+      "uninstallerIcon": "icon.png"
+    }
+  }
+}
