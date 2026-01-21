@@ -15,14 +15,11 @@
         .page { display: none; height: 100%; }
         .page.active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        /* تحسين شكل شريط التمرير */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
 </head>
 <body class="flex h-screen">
 
+    <!-- القائمة الجانبية -->
     <div class="w-24 bg-slate-900/50 border-l border-white/5 flex flex-col py-10 space-y-8 items-center">
         <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center mb-10 shadow-lg shadow-emerald-500/20">
             <i class="fas fa-mosque text-xl text-white"></i>
@@ -35,6 +32,7 @@
 
     <main class="flex-1 p-10 overflow-y-auto">
         
+        <!-- صفحة الصلاة الرئيسية -->
         <div id="main" class="page active">
             <div class="flex justify-between items-center mb-10">
                 <div>
@@ -55,6 +53,7 @@
             <div class="grid grid-cols-5 gap-4 text-center" id="prayer-times-grid"></div>
         </div>
 
+        <!-- صفحة الأذكار -->
         <div id="azkar" class="page">
             <h1 class="text-4xl font-black text-emerald-400 mb-10">الأذكار والأدعية</h1>
             <div class="grid grid-cols-1 gap-6 text-right">
@@ -63,21 +62,22 @@
             </div>
         </div>
 
+        <!-- صفحة التحديثات -->
         <div id="updates" class="page">
             <h1 class="text-4xl font-black text-emerald-400 mb-10">مركز التحديثات</h1>
             <div class="glass-card p-8 rounded-3xl space-y-6 max-w-2xl text-right">
                 <div class="flex items-center gap-4 bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/20">
                     <i class="fas fa-info-circle text-emerald-400 text-2xl"></i>
                     <div>
-                        <p class="font-bold text-white">الإصدار الحالي: <span id="current-v-display">1.0.0</span></p>
+                        <p class="font-bold text-white">الإصدار الحالي: <span id="current-v-display">1.0.1</span></p>
                         <p class="text-xs text-slate-400 italic">حالة النظام: مستقر وجاهز</p>
                     </div>
                 </div>
 
                 <div id="update-loading-area" class="hidden space-y-3">
-                    <p class="text-xs text-center text-emerald-400 animate-pulse font-bold">يوجد تحديث جديد! جاري التحميل في الخلفية...</p>
+                    <p class="text-xs text-center text-emerald-400 animate-pulse">جاري تحميل التحديث الجديد...</p>
                     <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                        <div id="update-progress-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+                        <div id="update-progress-bar" class="bg-emerald-500 h-full w-full transition-all duration-300"></div>
                     </div>
                 </div>
 
@@ -88,13 +88,15 @@
             </div>
         </div>
 
+        <!-- صفحة الإعدادات -->
         <div id="settings" class="page">
             <h1 class="text-4xl font-black text-emerald-400 mb-10">الإعدادات</h1>
             <div class="glass-card p-8 rounded-3xl space-y-6 max-w-2xl text-right">
+                
                 <div class="flex justify-between items-center border-b border-white/5 pb-6">
                     <div>
-                        <p class="font-bold">تنبيهات الأذان والرسائل</p>
-                        <p class="text-xs text-slate-500">تشغيل/إيقاف أصوات الأذان وإشعارات ديسكورد</p>
+                        <p class="font-bold">تنبيهات ديسكورد</p>
+                        <p class="text-xs text-slate-500">تشغيل/إيقاف إشعارات الرسائل الفورية</p>
                     </div>
                     <input type="checkbox" id="notify-toggle" checked class="w-6 h-6 accent-emerald-500 cursor-pointer">
                 </div>
@@ -117,7 +119,7 @@
                 </div>
 
                 <div class="text-[10px] text-slate-600 flex justify-between">
-                    <p>إصدار التطبيق: 1.0.0</p>
+                    <p>إصدار التطبيق: 1.0.1</p>
                     <p>By Abdu 015 © 2026</p>
                 </div>
             </div>
@@ -126,11 +128,19 @@
 
     <script>
         const { ipcRenderer } = require('electron');
-        const path = require('path');
 
-        const prayerAr = { "Fajr": "الفجر", "Dhuhr": "الظهر", "Asr": "العصر", "Maghrib": "المغرب", "Isha": "العشاء" };
+        // --- بيانات الصلاة ---
         let prayerTimes = {};
-        let isAdhanPlaying = false;
+        const prayerAr = { "Fajr": "الفجر", "Dhuhr": "الظهر", "Asr": "العصر", "Maghrib": "المغرب", "Isha": "العشاء" };
+
+        function format12Hour(time24) {
+            if(!time24) return "--:--";
+            let [hours, minutes] = time24.split(' ')[0].split(':');
+            hours = parseInt(hours);
+            const period = hours >= 12 ? 'م' : 'ص';
+            hours = hours % 12 || 12;
+            return `${hours}:${minutes} ${period}`;
+        }
 
         function showPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -157,86 +167,109 @@
                 document.getElementById('city-name').innerText = `توقيت مدينة ${city}`;
                 renderGrid();
             } catch (e) {
-                document.getElementById('city-name').innerText = "خطأ في الاتصال";
+                document.getElementById('city-name').innerText = "خطأ في الشبكة";
             }
         }
 
         function renderGrid() {
             const grid = document.getElementById('prayer-times-grid');
             grid.innerHTML = '';
-            ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(id => {
-                grid.innerHTML += `
-                    <div id="card-${id}" class="glass-card p-6 rounded-2xl text-center transition-all border border-transparent">
-                        <p class="text-slate-500 mb-2">${prayerAr[id]}</p>
-                        <p class="text-2xl font-black">${prayerTimes[id] || '--:--'}</p>
-                    </div>`;
+            ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-6 rounded-3xl border-b-4 border-transparent hover:border-emerald-500 transition-all';
+                card.innerHTML = `
+                    <p class="text-slate-400 text-sm mb-2">${prayerAr[p]}</p>
+                    <p class="text-2xl font-black">${format12Hour(prayerTimes[p])}</p>
+                `;
+                grid.appendChild(card);
             });
         }
 
-        function startUpdateLoop() {
-            setInterval(() => {
-                const now = new Date();
-                document.getElementById('current-time').innerText = now.toLocaleTimeString('ar-EG', {hour12:true});
-                
-                // حساب الصلاة القادمة والعداد
-                let next = null; let nextId = "";
-                for (let id of ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]) {
-                    if(!prayerTimes[id]) continue;
-                    const [h, m] = prayerTimes[id].split(':');
-                    const pDate = new Date(); pDate.setHours(parseInt(h), parseInt(m), 0);
-                    if (pDate > now) { next = pDate; nextId = id; break; }
-                }
-
-                // إذا انتهت صلوات اليوم، الصلاة القادمة هي فجر الغد
-                if (!next && prayerTimes["Fajr"]) {
-                    const [h, m] = prayerTimes["Fajr"].split(':');
-                    next = new Date(); next.setDate(now.getDate() + 1);
-                    next.setHours(parseInt(h), parseInt(m), 0);
-                    nextId = "Fajr";
-                }
-
-                if(nextId) {
-                    document.getElementById('next-prayer-name').innerText = prayerAr[nextId];
-                    document.querySelectorAll('[id^="card-"]').forEach(c => c.classList.remove('highlight-border'));
-                    document.getElementById(`card-${nextId}`)?.classList.add('highlight-border');
-                    
-                    const diff = next - now;
-                    const hh = Math.floor(diff / 3600000); 
-                    const mm = Math.floor((diff % 3600000) / 60000); 
-                    const ss = Math.floor((diff % 60000) / 1000);
-                    document.getElementById('timer').innerText = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
-                }
-            }, 1000);
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('current-time').innerText = now.toLocaleTimeString('ar-SA');
+            
+            if (Object.keys(prayerTimes).length > 0) {
+                updateTimer(now);
+            }
         }
 
-        // --- التحديثات التلقائية ---
+        function updateTimer(now) {
+            const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+            let nextP = null;
+            let nextT = null;
+
+            for (let p of prayers) {
+                const [h, m] = prayerTimes[p].split(':');
+                const pDate = new Date();
+                pDate.setHours(h, m, 0);
+                if (pDate > now) {
+                    nextP = p;
+                    nextT = pDate;
+                    break;
+                }
+            }
+
+            if (!nextP) {
+                const [h, m] = prayerTimes["Fajr"].split(':');
+                nextT = new Date();
+                nextT.setDate(nextT.getDate() + 1);
+                nextT.setHours(h, m, 0);
+                nextP = "Fajr";
+            }
+
+            document.getElementById('next-prayer-name').innerText = prayerAr[nextP];
+            const diff = nextT - now;
+            const hours = Math.floor(diff / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            const secs = Math.floor((diff % 60000) / 1000);
+            document.getElementById('timer').innerText = 
+                `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        // --- نظام التحديثات ---
         function triggerUpdateCheck() {
-            ipcRenderer.send('check-for-updates-manual');
             const btn = document.getElementById('check-update-btn');
-            btn.innerText = "جاري الفحص...";
+            btn.innerText = "جاري التحقق...";
             btn.disabled = true;
+            ipcRenderer.send('check-for-updates');
+            
             setTimeout(() => {
                 btn.innerText = "التحقق من وجود تحديث";
                 btn.disabled = false;
-            }, 3000);
+            }, 5000);
         }
 
         ipcRenderer.on('update_available', () => {
             document.getElementById('update-loading-area').classList.remove('hidden');
+            alert('يوجد تحديث جديد! بدأ التحميل تلقائياً...');
+        });
+
+        ipcRenderer.on('update_not_available', () => {
+            alert('أنت تستخدم أحدث إصدار بالفعل.');
         });
 
         ipcRenderer.on('update_downloaded', () => {
-            if (confirm("تم تحميل التحديث بنجاح! هل تريد تثبيته الآن؟")) {
+            if(confirm('تم تحميل التحديث بنجاح. هل تريد إعادة تشغيل التطبيق لتثبيته الآن؟')) {
                 ipcRenderer.send('restart_app');
             }
         });
 
-        // تشغيل النظام
+        // --- التهيئة عند التشغيل ---
         async function init() {
             const city = localStorage.getItem('savedCity') || "Riyadh";
             const country = localStorage.getItem('savedCountry') || "SA";
+            const fullVal = localStorage.getItem('savedFullValue') || "Riyadh,SA";
+            document.getElementById('city-select').value = fullVal;
+            
             await fetchData(city, country);
-            startUpdateLoop();
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // إعدادات التنبيهات
+            document.getElementById('notify-toggle').addEventListener('change', (e) => {
+                ipcRenderer.send('update-notify-status', e.target.checked);
+            });
         }
 
         init();
