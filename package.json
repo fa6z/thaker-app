@@ -1,7 +1,7 @@
 {
   "name": "thaker-app",
-  "version": "1.0.1",
-  "description": "تطبيق ذكر ",
+  "version": "1.0.3",
+  "description": "تطبيق ذكر - مواقيت الصلاة وإشعارات ديسكورد",
   "author": "fa6z",
   "main": "main.js",
   "repository": {
@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --publish always"
+    "dist": "electron-builder --win --publish always",
+    "build": "electron-builder --win"
   },
   "dependencies": {
     "discord.js": "^14.14.1",
@@ -24,6 +25,7 @@
   "build": {
     "appId": "com.abdu015.thaker",
     "productName": "Thaker App",
+    "copyright": "Copyright © 2026 fa6z",
     "directories": {
       "output": "dist"
     },
@@ -36,7 +38,14 @@
       }
     ],
     "win": {
-      "target": "nsis",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
       "icon": "icon.png",
       "publish": [
         "github"
@@ -46,15 +55,16 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "installerIcon": "icon.png",
-      "uninstallerIcon": "icon.png"
+      "createStartMenuShortcut": true,
+      "shortcutName": "تطبيق ذَكِّرْ"
     },
-    "extraFiles": [
-      {
-        "from": ".env",
-        "to": ".env",
-        "filter": ["**/*"]
-      }
+    "files": [
+      "**/*",
+      "!dist/*",
+      "!.env",
+      "!.env.example",
+      "!README.md",
+      "!.gitignore"
     ]
   }
 }
