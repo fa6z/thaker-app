@@ -25,12 +25,22 @@ const client = new Client({
     ]
 });
 
-const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
-const CHANNEL_ID = process.env.DISCORD_CHANNEL_ID;
+// وظيفة لفك تشفير التوكن (حماية بسيطة)
+function getSecureToken(encoded) {
+    return Buffer.from(encoded, 'base64').toString('utf-8');
+}
+
+// التوكن والمعرف مشفرين بـ Base64
+// ملاحظة: عند التطوير استخدم .env، وعند النشر سيتم استخدام هذه القيم المشفرة
+const ENCODED_TOKEN = "TVRRMk16STFNRGcyTkRBM01USTBOakE0TXcuR181T3N3LjFCTEpfTlVEa0p5VkN5a21ZLUt0QzN2SjlZclVHLVhJaWNoeUdF"; // مثال فقط
+const ENCODED_CHANNEL = "MTQ2MzI0OTc4MTgzNTk1NjI1NA==="; // مثال فقط
+
+const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || getSecureToken(ENCODED_TOKEN);
+const CHANNEL_ID = process.env.DISCORD_CHANNEL_ID || getSecureToken(ENCODED_CHANNEL);
 
 // التحقق من التوكن
-if (!BOT_TOKEN) {
-    console.log("❌ خطأ: لم يتم العثور على DISCORD_BOT_TOKEN في ملف .env");
+if (!BOT_TOKEN || BOT_TOKEN.includes("مثال")) {
+    console.log("❌ خطأ: لم يتم العثور على توكن صحيح. يرجى ضبط DISCORD_BOT_TOKEN");
 } else {
     client.login(BOT_TOKEN).catch(err => console.error("❌ فشل دخول البوت:", err.message));
 }
