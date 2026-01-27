@@ -248,8 +248,14 @@
         }
         .hover-lift:hover {
             transform: translateY(-5px) !important;
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-color: var(--primary-color) !important;
+        }
+
+        .ehsan-logo-filter {
+            filter: grayscale(100%) brightness(0) invert(1); /* تحويل الشعار إلى أبيض */
+            transition: all 0.3s ease;
+        }
+        .ehsan-logo-filter:hover {
+            filter: grayscale(0) brightness(1) invert(0); /* العودة للألوان الأصلية */
         }
 
         @keyframes fadeInUp {
@@ -281,7 +287,7 @@
 <body class="flex h-screen">
     <!-- Splash Screen -->
     <div id="splash-screen">
-        <img src="assets/icon.png" alt="Logo" class="splash-logo">
+        <img src="icon.png" alt="Logo" class="splash-logo">
         <div class="splash-text">
             "وَذَكِّرْ فَإِنَّ الذِّكْرَىٰ تَنْفَعُ الْمُؤْمِنِينَ"
         </div>
@@ -335,6 +341,7 @@
         <div class="sidebar-item" onclick="showPage('calendar', this)"><i class="fas fa-calendar-alt text-xl"></i><p class="text-[10px] mt-1">التاريخ</p></div>
         <div class="sidebar-item" onclick="showPage('updates', this)"><i class="fas fa-sync-alt text-xl"></i><p class="text-[10px] mt-1">التحديثات</p></div>
         <div id="sidebar-ramadan" class="sidebar-item hidden" onclick="showPage('ramadan', this)"><i class="fas fa-moon text-xl ramadan-accent"></i><p class="text-[10px] mt-1 ramadan-accent">رمضان</p></div>
+        <div id="sidebar-sadaqah" class="sidebar-item" onclick="showPage('sadaqah', this)"><i class="fas fa-hand-holding-heart text-xl"></i><p class="text-[10px] mt-1">الصدقة</p></div>
         <div class="sidebar-item" onclick="showPage('settings', this)"><i class="fas fa-cog text-xl"></i><p class="text-[10px] mt-1">الإعدادات</p></div>
     </div>
 
@@ -438,6 +445,89 @@
                         <span class="text-sm font-bold">مشاركة إنجاز الختمة</span>
                     </button>
                 </div>
+            </div>
+        </div>
+
+        <!-- صفحة الصدقة -->
+        <div id="sadaqah" class="page">
+            <div class="flex justify-between items-center mb-10">
+                <div>
+                    <h1 class="text-4xl font-black mb-2">الصدقة الجارية</h1>
+                    <p class="text-slate-400">"مَّن ذَا الَّذِي يُقْرِضُ اللَّهَ قَرْضًا حَسَنًا فَيُضَاعِفَهُ لَهُ أَضْعَافًا كَثِيرَةً"</p>
+                </div>
+                <div class="bg-primary/10 p-4 rounded-2xl flex items-center gap-4 border border-primary/20">
+                    <i class="fas fa-hand-holding-heart text-3xl text-primary"></i>
+                    <div class="text-right">
+                        <p class="text-[10px] text-slate-400">منصة إحسان</p>
+                        <p class="text-sm font-bold">شريك الخير الرسمي</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- فرص التبرع المحدثة -->
+                <div class="glass-card p-6 rounded-3xl border-b-4 border-primary hover-lift">
+                    <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
+                        <i class="fas fa-hand-holding-usd text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">الزكاة</h3>
+                    <p class="text-sm text-slate-400 mb-6">ساهم في تطهير مالك وتنمية المجتمع بدفع زكاتك لمستحقيها.</p>
+                    <button onclick="require('electron').shell.openExternal('https://ehsan.sa/projects?initiativeType=Project&p=1&fs=AlmostComplete&contributionType=Zakat')" class="w-full bg-primary text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all">تبرع الآن</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border-b-4 border-primary hover-lift">
+                    <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
+                        <i class="fas fa-child text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">كفالة يتيم</h3>
+                    <p class="text-sm text-slate-400 mb-6">كن رفيق النبي ﷺ في الجنة بكفالة يتيم وتوفير احتياجاته.</p>
+                    <button onclick="require('electron').shell.openExternal('https://ehsan.sa/Orphans')" class="w-full bg-primary text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all">تبرع الآن</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border-b-4 border-primary hover-lift">
+                    <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
+                        <i class="fas fa-handshake text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">فرج كرباً</h3>
+                    <p class="text-sm text-slate-400 mb-6">ساهم في تفريج كربة معسر أو سجين وأعد الفرحة لأسرته.</p>
+                    <button onclick="require('electron').shell.openExternal('https://ehsan.sa/forijat')" class="w-full bg-primary text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all">تبرع الآن</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border-b-4 border-primary hover-lift">
+                    <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
+                        <i class="fas fa-heartbeat text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">ساعد مريض</h3>
+                    <p class="text-sm text-slate-400 mb-6">ساعد في علاج المرضى وتوفير الأدوية والعمليات الجراحية.</p>
+                    <button onclick="require('electron').shell.openExternal('https://ehsan.sa/projects?projectType=Health')" class="w-full bg-primary text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all">تبرع الآن</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border-b-4 border-primary hover-lift">
+                    <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
+                        <i class="fas fa-utensils text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">أطعم متعففاً</h3>
+                    <p class="text-sm text-slate-400 mb-6">ساهم في توفير السلال الغذائية والوجبات للأسر المحتاجة.</p>
+                    <button onclick="require('electron').shell.openExternal('https://ehsan.sa/projects?projectType=Feeding')" class="w-full bg-primary text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all">تبرع الآن</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border-b-4 border-primary hover-lift">
+                    <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
+                        <i class="fas fa-home text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">وفر مسكناً</h3>
+                    <p class="text-sm text-slate-400 mb-6">ساهم في توفير مسكن آمن ومستقر للأسر الأشد حاجة.</p>
+                    <button onclick="require('electron').shell.openExternal('https://ehsan.sa/housing')" class="w-full bg-primary text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all">تبرع الآن</button>
+                </div>
+            </div>
+
+            <div class="mt-10 bg-white/5 p-8 rounded-[2.5rem] border border-white/10 flex flex-col md:flex-row items-center gap-8">
+                <img src="https://ehsan.sa/ehsan-ui/images/Ehsan-Logo.svg" class="h-16 ehsan-logo-filter cursor-pointer" onclick="require('electron').shell.openExternal('https://ehsan.sa/')">
+                <div class="flex-1 text-center md:text-right">
+                    <h4 class="text-xl font-bold mb-2">عن منصة إحسان</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">منصة وطنية للعمل الخيري تعمل تحت إشراف الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا)، تهدف إلى تعزيز قيم العمل الإنساني لأفراد المجتمع من خلال التكامل مع الجهات الحكومية المختلفة وتعظيم نفع القطاع غير الربحي.</p>
+                </div>
+                <button onclick="require('electron').shell.openExternal('https://ehsan.sa/')" class="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-2xl font-bold transition-all">زيارة المنصة</button>
             </div>
         </div>
 
@@ -678,9 +768,17 @@
             <h1 class="text-4xl font-black text-primary mb-10">التاريخ والمناسبات</h1>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="glass-card p-8 rounded-3xl text-center">
-                    <h3 class="text-xl font-bold text-slate-400 mb-6">التاريخ الهجري اليوم</h3>
-                    <div id="hijri-card" class="text-5xl font-black text-primary mb-4">--</div>
-                    <p id="gregorian-card" class="text-slate-500 italic">--</p>
+                    <h3 class="text-xl font-bold text-slate-400 mb-6">التاريخ اليوم</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white/5 p-4 rounded-2xl">
+                            <p class="text-sm text-slate-400 mb-1">التاريخ الهجري</p>
+                            <p id="hijri-card" class="text-3xl font-black text-primary">--</p>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-2xl">
+                            <p class="text-sm text-slate-400 mb-1">التاريخ الميلادي</p>
+                            <p id="gregorian-card" class="text-3xl font-black text-white">--</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="glass-card p-8 rounded-3xl">
                     <h3 class="text-xl font-bold text-slate-400 mb-6 border-r-4 border-primary pr-3">العد التنازلي للمناسبات</h3>
@@ -710,7 +808,7 @@
                     <div class="flex items-center gap-4 bg-primary/10 p-4 rounded-2xl border border-primary/20">
                         <i class="fas fa-info-circle text-primary text-2xl"></i>
                         <div>
-                            <p class="font-bold text-white">الإصدار الحالي: <span id="current-v-display">1.0.3</span></p>
+                            <p class="font-bold text-white">الإصدار الحالي: <span id="current-v-display">1.0.4</span></p>
                             <p class="text-xs text-slate-400 italic">حالة النظام: مستقر وجاهز</p>
                         </div>
                     </div>
@@ -720,7 +818,7 @@
                 </div>
 
                 <div class="glass-card p-8 rounded-3xl space-y-4 text-right">
-                    <h3 class="text-xl font-bold mb-4 border-r-4 border-primary pr-3">ما الجديد (v1.0.3)</h3>
+                    <h3 class="text-xl font-bold mb-4 border-r-4 border-primary pr-3">ما الجديد (v1.0.4)</h3>
                     <div class="space-y-4 max-h-[300px] overflow-y-auto no-scrollbar pr-2">
                         <div class="bg-white/5 p-4 rounded-2xl border-r-2 border-primary">
                             <p class="text-primary font-bold text-sm mb-1">نظام صلاة الجمعة</p>
@@ -748,12 +846,12 @@
             <h1 class="text-4xl font-black text-primary mb-10">الإعدادات</h1>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="glass-card p-8 rounded-3xl space-y-6 text-right">
-                    <h3 class="text-xl font-bold mb-4 border-r-4 border-primary pr-3">الموقع والتنبيهات</h3>
+                    <h3 class="text-xl font-bold mb-4 border-r-4 border-primary pr-3">إعدادات النظام</h3>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl">
-                            <span class="font-bold">تفعيل التنبيهات الصوتية</span>
+                            <span class="font-bold">التشغيل عند بدء الجهاز</span>
                             <label class="switch">
-                                <input type="checkbox" id="notify-toggle" checked>
+                                <input type="checkbox" id="toggle-auto-launch" onchange="updateAutoLaunch(this.checked)">
                                 <span class="slider"></span>
                             </label>
                         </div>
@@ -764,6 +862,17 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
+                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl">
+                            <span class="font-bold">تفعيل التنبيهات الصوتية</span>
+                            <label class="switch">
+                                <input type="checkbox" id="notify-toggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <hr class="border-white/5 my-4">
+                    <h3 class="text-xl font-bold mb-4 border-r-4 border-primary pr-3">الموقع الجغرافي</h3>
+                    <div class="space-y-4">
                         <button onclick="detectLocation()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2">
                             <i class="fas fa-location-crosshairs"></i> تحديد الموقع تلقائياً
                         </button>
@@ -774,8 +883,6 @@
                         <div id="search-results" class="hidden bg-slate-800/50 rounded-xl p-2 space-y-1 max-h-[150px] overflow-y-auto no-scrollbar border border-white/5">
                             <!-- نتائج البحث تظهر هنا -->
                         </div>
-                        
-
                     </div>
                 </div>
 
@@ -860,16 +967,29 @@
                             </label>
                         </div>
 
+                        <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-hand-holding-heart text-primary"></i>
+                                <span class="text-sm">قسم الصدقة</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-sadaqah" onchange="toggleSidebarItem('sadaqah', this.checked)" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
                         <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-[#d4af37]/30">
                             <div class="flex items-center gap-3">
                                 <i class="fas fa-moon ramadan-accent"></i>
-                                <span class="text-sm ramadan-accent">قسم رمضان (تجريبي)</span>
+                                <span class="text-sm ramadan-accent">قسم رمضان (تفعيل يدوي)</span>
                             </div>
                             <label class="switch">
                                 <input type="checkbox" id="toggle-ramadan" onchange="toggleSidebarItem('ramadan', this.checked)" class="ramadan-toggle">
                                 <span class="slider"></span>
                             </label>
                         </div>
+
+
                     </div>
 
                     <h3 class="text-xl font-bold mb-4 border-r-4 border-primary pr-3">تخصيص المظهر</h3>
@@ -899,7 +1019,7 @@
                 </div>
             </div>
             <div class="mt-10 text-[10px] text-slate-600 flex justify-between px-4">
-                <p>إصدار التطبيق: 1.0.3</p>
+                <p>إصدار التطبيق: 1.0.5</p>
                 <p>By Abdu 015 © 2026</p>
             </div>
         </div>
@@ -1065,6 +1185,7 @@
                 hadith: document.getElementById('toggle-hadith').checked,
                 calendar: document.getElementById('toggle-calendar').checked,
                 updates: document.getElementById('toggle-updates').checked,
+                sadaqah: document.getElementById('toggle-sadaqah').checked,
                 ramadan: document.getElementById('toggle-ramadan').checked
             };
             localStorage.setItem('sidebarSettings', JSON.stringify(settings));
@@ -1074,7 +1195,6 @@
             const settings = JSON.parse(localStorage.getItem('sidebarSettings'));
             
             // التحقق التلقائي من شهر رمضان (شهر 9 هجري)
-            // سنعتمد على النص الظاهر في التاريخ الهجري للتحقق من كلمة "رمضان"
             const hijriText = document.getElementById('hijri-date-display').innerText;
             const isRamadanMonth = hijriText.includes('رمضان');
             
@@ -1093,9 +1213,12 @@
                         }
                     }
                 }
-            } else if (isRamadanMonth) {
-                const ramadanItem = document.getElementById('sidebar-ramadan');
-                if (ramadanItem) ramadanItem.style.display = 'block';
+            } else {
+                // الإعدادات الافتراضية إذا لم تكن موجودة
+                if (isRamadanMonth) {
+                    const ramadanItem = document.getElementById('sidebar-ramadan');
+                    if (ramadanItem) ramadanItem.style.display = 'block';
+                }
             }
         }
 
@@ -1289,10 +1412,24 @@
             const now = new Date();
             document.getElementById('current-time').innerText = now.toLocaleTimeString('ar-SA');
             
-            // تحديث التاريخ الهجري
-            const hijriOptions = { day: 'numeric', month: 'long', calendar: 'islamic-uma' };
-            const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma', hijriOptions).format(now);
-            document.getElementById('hijri-date-display').innerText = hijriDate;
+            // تحديث التاريخ الهجري (اليوم والشهر والسنة)
+            const hijriOptionsFull = { day: 'numeric', month: 'long', year: 'numeric', calendar: 'islamic-umalqura' };
+            const hijriDateFull = new Intl.DateTimeFormat('ar-SA', hijriOptionsFull).format(now).replace('هـ', '').trim() + ' هـ';
+            
+            // تحديث التاريخ الهجري المختصر في الواجهة الرئيسية
+            const hijriOptionsShort = { day: 'numeric', month: 'long', calendar: 'islamic-umalqura' };
+            const hijriDateShort = new Intl.DateTimeFormat('ar-SA', hijriOptionsShort).format(now);
+            document.getElementById('hijri-date-display').innerText = hijriDateShort;
+
+            // تحديث التاريخ الميلادي (السنة الشهر اليوم)
+            const gregorianYear = now.getFullYear();
+            const gregorianMonth = now.getMonth() + 1;
+            const gregorianDay = now.getDate();
+            const gregorianDateFormatted = `${gregorianYear} ${gregorianMonth} ${gregorianDay}`;
+            
+            // تحديث التاريخ الهجري والميلادي في صفحة التاريخ
+            document.getElementById('hijri-card').innerText = hijriDateFull;
+            document.getElementById('gregorian-card').innerText = gregorianDateFormatted;
             
             if (Object.keys(prayerTimes).length > 0) {
                 updateTimer(now);
@@ -1346,16 +1483,19 @@
                 fridaySystem.classList.remove('active');
             }
 
-            // منطق الإشعارات
+            // منطق الإشعارات (يتم التنبيه فقط في يوم الجمعة الفعلي)
             const currentTimeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-            
-            if (currentTimeStr === firstAdhanStr && !fridayNotifiedFirst) {
-                playFridayAdhan('first');
-                fridayNotifiedFirst = true;
-            }
-            if (currentTimeStr === secondAdhanStr && !fridayNotifiedSecond) {
-                playFridayAdhan('second');
-                fridayNotifiedSecond = true;
+            const isActuallyFriday = now.getDay() === 5;
+
+            if (isActuallyFriday) {
+                if (currentTimeStr === firstAdhanStr && !fridayNotifiedFirst) {
+                    playFridayAdhan('first');
+                    fridayNotifiedFirst = true;
+                }
+                if (currentTimeStr === secondAdhanStr && !fridayNotifiedSecond) {
+                    playFridayAdhan('second');
+                    fridayNotifiedSecond = true;
+                }
             }
             
             // إعادة تصفير الإشعارات إذا مر الوقت
@@ -1365,7 +1505,7 @@
 
         function playFridayAdhan(type) {
             stopAllAudio();
-            const soundPath = type === 'first' ? 'slah_sound/friday_first.MP3' : 'slah_sound/friday_second.MP3';
+            const soundPath = type === 'first' ? 'salah_audio/athan_now/g1.MP3' : 'salah_audio/athan_now/g2.MP3';
             const title = type === 'first' ? "الأذان الأول للجمعة" : "الأذان الثاني للجمعة";
             const body = type === 'first' ? "حان موعد الأذان الأول لصلاة الجمعة.. استعد للذهاب للمسجد" : "حان موعد الأذان الثاني لصلاة الجمعة.. بدأت الخطبة الآن";
             
@@ -1375,7 +1515,7 @@
             showToast(body, "fa-mosque");
             
             if (Notification.permission === "granted") {
-                new Notification(title, { body: body, icon: 'assets/icon.png' });
+                new Notification(title, { body: body, icon: 'icon.png' });
             }
             ipcRenderer.send('notify-prayer', title);
         }
@@ -1411,16 +1551,16 @@
             if (Notification.permission === "granted") {
                 new Notification("تطبيق ذَكِّرْ", {
                     body: `حان الآن موعد صلاة ${prayerName} حسب توقيت مدينتك`,
-                    icon: "assets/icon.png"
+                    icon: "icon.png"
                 });
             }
             ipcRenderer.send('notify-prayer', prayerName);
 
-            const audioPath = `slah_sound/${prayerKey.toLowerCase()}.MP3`;
+            const audioPath = `salah_audio/${prayerKey.toLowerCase()}.MP3`;
             currentAudio = new Audio(audioPath);
             currentAudio.play().catch(e => {
                 console.error("فشل تشغيل صوت الأذان:", e);
-                showToast("فشل تشغيل الصوت، تأكد من وجود الملف في مجلد slah_sound", "fa-exclamation-circle");
+                showToast("فشل تشغيل الصوت، تأكد من وجود الملف في مجلد salah_audio", "fa-exclamation-circle");
             });
         }
 
@@ -1562,7 +1702,7 @@
             
             // قالب خلفية رمضانية جمالية
             img.crossOrigin = "anonymous";
-            img.src = "https://images.unsplash.com/photo-1552423114-7502e269232d?q=80&w=1000&auto=format&fit=crop"; 
+            img.src = "ramadan.png"; 
 
             img.onload = () => {
                 canvas.width = 1000;
@@ -1909,11 +2049,23 @@
             document.getElementById('azkar-detail').classList.add('hidden');
         }
 
+        function updateAutoLaunch(enabled) {
+            localStorage.setItem('autoLaunch', enabled);
+            ipcRenderer.send('set-auto-launch', enabled);
+            showToast(enabled ? "تم تفعيل التشغيل التلقائي مع الجهاز" : "تم تعطيل التشغيل التلقائي", "fa-rocket");
+        }
+
         async function init() {
             const loaderBar = document.getElementById('loader-bar');
             const splash = document.getElementById('splash-screen');
             
             loaderBar.style.width = "20%";
+
+            // استرجاع حالة التشغيل التلقائي
+            const autoLaunch = localStorage.getItem('autoLaunch') === 'true';
+            document.getElementById('toggle-auto-launch').checked = autoLaunch;
+            ipcRenderer.send('set-auto-launch', autoLaunch);
+
             const city = localStorage.getItem('savedCity') || "Riyadh";
             const lat = localStorage.getItem('savedLat');
             const lon = localStorage.getItem('savedLon');
@@ -1967,10 +2119,9 @@
             renderRamadanTasks();
 
             loaderBar.style.width = "100%";
-            setTimeout(() => {
-                splash.style.opacity = "0";
-                splash.style.visibility = "hidden";
-            }, 800);
+            // إزالة التأخير لضمان ظهور شاشة البداية فوراً بعد تحميل البيانات
+            splash.style.opacity = "0";
+            splash.style.visibility = "hidden";
         }
         init();
     </script>
