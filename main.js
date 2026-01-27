@@ -32,8 +32,8 @@ function getSecureToken(encoded) {
 
 // التوكن والمعرف مشفرين بـ Base64
 // ملاحظة: عند التطوير استخدم .env، وعند النشر سيتم استخدام هذه القيم المشفرة
-const ENCODED_TOKEN = "TVRRMk16STFNRGcyTkRBM01USTBOakE0TXcuR181T3N3LjFCTEpfTlVEa0p5VkN5a21ZLUt0QzN2SjlZclVHLVhJaWNoeUdF"; // مثال فقط
-const ENCODED_CHANNEL = "MTQ2MzI0OTc4MTgzNTk1NjI1NA==="; // مثال فقط
+const ENCODED_TOKEN = "TVRJeU56RXpPRFEwTkRreU16ZzBOVE0wTncueU9XU05BLm9XU05BLm9XU05BLm9XU05BLm9XU05B"; // مثال فقط
+const ENCODED_CHANNEL = "TVRJeU56RXpPRFEwTkRreU16ZzBOVE0wTnc="; // مثال فقط
 
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || getSecureToken(ENCODED_TOKEN);
 const CHANNEL_ID = process.env.DISCORD_CHANNEL_ID || getSecureToken(ENCODED_CHANNEL);
@@ -83,7 +83,8 @@ function createWindow() {
             contextIsolation: false,
             webSecurity: false
         },
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+        backgroundColor: '#1e293b' // لون خلفية داكن (slate-800 تقريباً) لمنع الشاشة البيضاء
     });
 
     win.loadFile('index.html');
@@ -150,4 +151,13 @@ app.on('window-all-closed', () => {
 
 ipcMain.on('update-notify-status', (event, status) => {
     notificationsEnabled = status;
+});
+
+// منطق التشغيل التلقائي مع الجهاز
+ipcMain.on('set-auto-launch', (event, shouldAutoLaunch) => {
+    app.setLoginItemSettings({
+        openAtLogin: shouldAutoLaunch,
+        path: app.getPath('exe')
+    });
+    console.log(`🚀 تم تحديث حالة التشغيل التلقائي إلى: ${shouldAutoLaunch}`);
 });
