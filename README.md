@@ -47,10 +47,9 @@
 ---
 
 ## 🛠️ لقطات من الشاشة (Screenshots)
-*(قم برفع صور واجهة التطبيق في مجلد باسم screenshots واستبدل الروابط أدناه)*
-| الواجهة الرئيسية | صفحة الأذكار | أوقات الصلاة |
+| الواجهة الرئيسية | صفحة الأذكار | صفحة رمضان |
 | :---: | :---: | :---: |
-| ![Main](https://via.placeholder.com/200) | ![Azkar](https://via.placeholder.com/200) | ![Prayer](https://via.placeholder.com/200) |
+| ![Main](https://github.com/fa6z/thaker-app/blob/main/screenshots/a_thaker.png) | ![Azkar](https://github.com/fa6z/thaker-app/blob/main/screenshots/c_thaker.png) | ![ramadan](https://github.com/fa6z/thaker-app/blob/main/screenshots/e_thaker.png) |
 
 ---
 
